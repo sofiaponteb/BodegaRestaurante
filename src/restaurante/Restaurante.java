@@ -55,7 +55,7 @@ public class Restaurante {
         this.entradaProductos = new ArrayList<>() ;
         
         this.proveedorAbarrotes = new Proveedor("Olimpica", 890107487, 7500500) ;
-        this.proveedorCarnes = new Proveedor("Carnes calidad", 310782928, 7438623) ;
+        this.proveedorCarnes = new Proveedor("Carnes_calidad", 310782928, 7438623) ;
         this.proveedorLacteosGranja = new Proveedor("Alpina", 532709690, 7650650) ;
         this.proveedorBebidasAlcoholicas = new Proveedor("Bavaria", 385080684, 7305636) ;
         this.proveedorBebidasNoAlcoholicas = new Proveedor("Postobon", 227480936, 8070647) ;
