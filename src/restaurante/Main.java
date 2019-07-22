@@ -68,6 +68,20 @@ public class Main {
         File file = new File("actualizar1.txt") ;
         PrintStream s = new PrintStream(file) ;
         s.println(restaurante.cnt + "," + restaurante.ventas);
+        int nfact = restaurante.getAlmacen().getFacturas().size() ;
+        s.println(nfact);
+            for( int i = 0 ; i < nfact ; i++ ){
+                LocalDateTime fecha = restaurante.getAlmacen().getFacturas().get(i).getFechaVencimiento() ;
+                double valor = restaurante.getAlmacen().getFacturas().get(i).getValor() ;
+                String p = null ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorAbarrotes)) p = restaurante.proveedorAbarrotes.getNombre() ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorBebidasAlcoholicas)) p = restaurante.proveedorBebidasAlcoholicas.getNombre() ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorBebidasNoAlcoholicas)) p = restaurante.proveedorBebidasNoAlcoholicas.getNombre() ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorCarnes)) p = restaurante.proveedorCarnes.getNombre() ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorFruver)) p = restaurante.proveedorFruver.getNombre() ;
+                if(restaurante.getAlmacen().getFacturas().get(i).getProveedor().equals(restaurante.proveedorLacteosGranja)) p = restaurante.proveedorLacteosGranja.getNombre() ;
+                s.println(fecha + "," + valor + "," + p);
+            }
         for( int i = 0 ; i < restaurante.getAlmacen().getInventario().size() ; i++ ){
             s.println(restaurante.getAlmacen().getInventario().get(i).nombre + "," + restaurante.getAlmacen().getInventario().get(i).cantidad);
             s.flush();
@@ -84,6 +98,25 @@ public class Main {
             String [] dividido = linea.split(",");
             restaurante.cnt = Integer.parseInt(dividido[0]) ;
             restaurante.ventas = Double.parseDouble(dividido[1]) ;
+            linea = archivo.readLine() ;
+            dividido = linea.split(",") ;
+            int nfact = Integer.parseInt(dividido[0]) ;
+            for( int i = 0 ; i < nfact ; i++ ){
+                linea = archivo.readLine() ;
+                dividido = linea.split(",") ;
+                LocalDateTime fecha = LocalDateTime.parse(dividido[0]) ;
+                double valor = Double.parseDouble(dividido[1]) ;
+                String p = dividido[2] ;
+                Proveedor proveedor = null ;
+                if(p.equals("Olimpica")) proveedor = restaurante.proveedorAbarrotes ;
+                if(p.equals("Carnes_calidad")) proveedor = restaurante.proveedorCarnes ;
+                if(p.equals("Alpina")) proveedor = restaurante.proveedorLacteosGranja ;
+                if(p.equals("Bavaria")) proveedor = restaurante.proveedorBebidasAlcoholicas ;
+                if(p.equals("Postobon")) proveedor = restaurante.proveedorBebidasNoAlcoholicas ;
+                if(p.equals("Surtifruver")) proveedor = restaurante.proveedorFruver ;
+                restaurante.getAlmacen().addFactura(fecha, valor, proveedor) ;
+            }
+            
             while((linea = archivo.readLine())!= null){
             	dividido = linea.split(",");
                 String nombre = dividido[0] ;
